@@ -1,0 +1,39 @@
+<div class="jumbotron text-center" style="padding-bottom: 0">
+  <h3>
+    Get your contractor and bulding and arrange new order!
+    {{{zmienna1}}}
+  </h3>
+  <a href="/" class="btn btn-dark btn-lg">
+    Add order
+  </a>
+</div>
+<div class="jumbotron text-center">
+  <h3>
+    TOP 5 Constructors - all bookings
+  </h3>
+  {{#each top5_1}}
+    <li class="list-group-item mb-2">
+      {{{this}}}
+    </li>
+  {{/each}}
+</div>
+<div class="jumbotron text-center">
+  <h3>
+    TOP 5 Constructors - upcoming bookings
+  </h3>
+  {{#each top5_2}}
+    <li class="list-group-item mb-2">
+      {{{this}}}
+    </li>
+  {{/each}}
+</div>
+<div class="jumbotron text-center">
+  <h3>
+    TOP 5 Buildings - upcoming bookings
+  </h3>
+  {{#each top5_3}}
+    <li class="list-group-item mb-2">
+      {{{this}}}
+    </li>
+  {{/each}}
+</div>

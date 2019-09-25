@@ -1,0 +1,24 @@
+<div class="jumbotron text-center">
+  <a href="/buildings/add" class="btn btn-dark btn-lg">
+    Add building
+  </a>
+</div>
+{{#each buildings}}
+  <div class="card card-body mb-2">
+    <h5>
+      City:
+      {{this.city}}
+    </h5>
+    <p>
+      Address:
+      {{this.address}}
+    </p>
+    <a href="/" class="btn btn-dark btn-block mb-2">
+      Edit
+    </a>
+    <form method="post">
+      <input type="hidden" name="_method" value="DELETE" />
+      <input type="submit" class="btn btn-danger btn-block" value="Delete" />
+    </form>
+  </div>
+{{/each}}
