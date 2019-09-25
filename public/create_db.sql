@@ -1,18 +1,18 @@
 -- FILL TABLES
 INSERT INTO tbl_contractors("fullName", "city", "address")
 VALUES
-('Contractor 1', 'New York', 'NY Street 1'),
-('Contractor 2', 'Los Angeles', 'LA Street 1'),
-('Contractor 3', 'New York', 'NY Street 2'),
-('Contractor 4', 'Los Angeles', 'LA Street 2'),
-('Contractor 5', 'Boston', 'BST Street 1'),
-('Contractor 6', 'Chicago', 'CHC Street 1'),
-('Contractor 7', 'Boston', 'BST Street 2'),
-('Contractor 8', 'Chicago', 'CHC Street 2'),
-('Contractor 9', 'Miami', 'MIM Street 1'),
-('Contractor 10', 'Atlanta', 'ATL Street 1'),
-('Contractor 11', 'New York', 'NY Street 3'),
-('Contractor 12', 'Chicago', 'CHC Street 3');
+('Bechtel Group Inc.', 'San Francisco, California', 'SF Street 1'),
+('Fluor Corporation', 'Irvine, California', 'LA Street 1'),
+('Chicago Bridge & Iron Company', 'The Woodlands, Texas', 'NY Street 2'),
+('Jacobs Engineering Group Inc.', 'Houston, Texas', 'LA Street 2'),
+('Kiewit Corporation', 'Omaha, Nebraska', 'BST Street 1'),
+('Turner Construction', 'New York City, New York', 'CHC Street 1'),
+('Skanska Construction', 'New York City, New York', 'BST Street 2'),
+('PCL Construction', 'Denver, Colorado', 'CHC Street 2'),
+('Whiting-Turner Contracting Company', 'Baltimore, Maryland', 'MIM Street 1'),
+('KBR (Kellogg, Brown, & Root) Inc.', 'Houston, Texas', 'ATL Street 1'),
+('ACS Actividades de Construcción y Servicios S.A.', 'Madrid, Spain', 'NY Street 3'),
+('Strabag', 'Vienna, Austria', 'CHC Street 3');
 
 INSERT INTO tbl_buildings ("city", "address")
 VALUES

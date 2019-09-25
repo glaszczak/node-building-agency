@@ -1,0 +1,36 @@
+<div class="jumbotron text-center">
+  <a href="/bookings/add" class="btn btn-dark btn-lg">
+    Add booking
+  </a>
+</div>
+{{#each bookings}}
+  <div class="card card-body mb-2">
+    <h5>
+      Building:
+      {{this.address}}
+      ,
+      {{this.city}}
+    </h5>
+    <p>
+      Booking From:
+      {{dateFormat this.fromDate "DD, MM,YYYY"}}
+      To:
+      {{dateFormat this.toDate format utc}}
+    </p>
+    <p>
+      Contractor:
+      {{this.fullName}}
+      ,
+      {{this.public_tbl_contractors_address2}}
+      ,
+      {{this.public_tbl_contractors_city2}}
+    </p>
+    <a href="/" class="btn btn-dark btn-block mb-2">
+      Edit
+    </a>
+    <form method="post">
+      <input type="hidden" name="_method" value="DELETE" />
+      <input type="submit" class="btn btn-danger btn-block" value="Delete" />
+    </form>
+  </div>
+{{/each}}
