@@ -21,14 +21,15 @@ router.post("/", async (req, res) => {
 
 // Edit Building Form
 router.get("/edit/:id", async (req, res) => {
-    const buildingsDetails = await db.getBuildingDetails(req.params.id)
-    res.render("buildings/edit", { buildings: buildingsDetails[0] })
+    const contractorDetails = await db.getContracorDetails(req.params.id)
+    //console.log(contractorDetails[0])
+    res.render("contractors/edit", { contractors: contractorDetails[0] })
 })
 
 // Process Form - edit existing
 router.put("/edit/:id", async (req, res) => {
-    await db.editBuilding(req.params.id, req.body.city, req.body.address)
-    res.redirect('/buildings')
+    await db.editContractor(req.params.id, req.body.fullName, req.body.city, req.body.address)
+    res.redirect('/contractors')
 })
 
 // Delete Building

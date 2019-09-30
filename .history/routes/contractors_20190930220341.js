@@ -24,19 +24,16 @@ router.post("/", async (req, res) => {
 // Edit Contractor Form
 router.get("/edit/:id", async (req, res) => {
     const contractorDetails = await db.getContracorDetails(req.params.id)
-    //console.log(contractorDetails[0])
+    console.log(contractorDetails[0])
     res.render("contractors/edit", { contractors: contractorDetails[0] })
 })
 
 // Process Form - edit existing
 router.put("/edit/:id", async (req, res) => {
-    await db.editContractor(req.params.id, req.body.fullName, req.body.city, req.body.address)
-    res.redirect('/contractors')
-})
+    console.log(req.body.idContractor)
+    console.log(req.body.fullName)
 
-// Delete Contractor
-router.delete("/:id", async (req, res) => {
-    await db.deleteContractor(req.params.id)
+    await db.editContractor(req.body.idContractor, req.body.fullName, req.body.city, req.body.address)
     res.redirect('/contractors')
 })
 

@@ -169,27 +169,7 @@ async function editContractor(id, fullName, city, address) {
         return console.error('Error while editing contractor')
     }
 }
-
-async function deleteContractor(id) {
-    try {
-        let sql = `DELETE FROM tbl_contractors WHERE "idContractor"=${id}`
-        const results = await client.query(sql)
-    }
-    catch (e) {
-        return console.error('Error while deleting contractor')
-    }
-}
-
-async function getBuildingDetails(id) {
-    try {
-        let sql = `SELECT * FROM tbl_buildings WHERE tbl_buildings."idBuildings"=${id}`
-        const result = await client.query(sql)
-        return result.rows
-    }
-    catch (e) {
-        return console.error('Error while retrieving info about building')
-    }
-}
+editContractor
 
 
 module.exports.start = start
@@ -204,5 +184,3 @@ module.exports.addNewContractor = addNewContractor
 module.exports.addNewBuilding = addNewBuilding
 module.exports.getContracorDetails = getContracorDetails
 module.exports.editContractor = editContractor
-module.exports.deleteContractor = deleteContractor
-module.exports.getBuildingDetails = getBuildingDetails

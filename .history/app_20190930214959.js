@@ -7,8 +7,6 @@ const { Client } = require("pg");
 const app = express()
 const db = require('./controllers/dbController')
 const Handlebars = require('handlebars')
-const methodOverride = require('method-override')
-
 
 // Load routes
 const contractors = require("./routes/contractors")

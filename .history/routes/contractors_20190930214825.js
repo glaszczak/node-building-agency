@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const db = require('../controllers/dbController')
-
+const methodOverride = require('method-override')
 
 // Index Page
 router.get("/", async (req, res) => {
@@ -30,14 +30,11 @@ router.get("/edit/:id", async (req, res) => {
 
 // Process Form - edit existing
 router.put("/edit/:id", async (req, res) => {
-    await db.editContractor(req.params.id, req.body.fullName, req.body.city, req.body.address)
-    res.redirect('/contractors')
-})
-
-// Delete Contractor
-router.delete("/:id", async (req, res) => {
-    await db.deleteContractor(req.params.id)
-    res.redirect('/contractors')
+    console.log('witaj')
+    console.log(req.body.idContractor)
+    console.log(req.body.fullName)
+    //await db.editContractor(req.body.idContractor, req.body.fullName, req.body.city, req.body.address)
+    //res.redirect('/contractors')
 })
 
 module.exports = router

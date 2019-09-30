@@ -30,14 +30,13 @@ router.get("/edit/:id", async (req, res) => {
 
 // Process Form - edit existing
 router.put("/edit/:id", async (req, res) => {
-    await db.editContractor(req.params.id, req.body.fullName, req.body.city, req.body.address)
-    res.redirect('/contractors')
-})
+    console.log(req.body.idContractor)
+    console.log(req.body.fullName)
+    console.log(req.body.city)
+    console.log(req.body.address)
 
-// Delete Contractor
-router.delete("/:id", async (req, res) => {
-    await db.deleteContractor(req.params.id)
-    res.redirect('/contractors')
+    //await db.editContractor(req.body.idContractor, req.body.fullName, req.body.city, req.body.address)
+    //res.redirect('/contractors')
 })
 
 module.exports = router

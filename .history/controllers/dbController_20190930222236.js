@@ -182,12 +182,12 @@ async function deleteContractor(id) {
 
 async function getBuildingDetails(id) {
     try {
-        let sql = `SELECT * FROM tbl_buildings WHERE tbl_buildings."idBuildings"=${id}`
+        let sql = `SELECT * FROM tbl_buildings WHERE tbl_contractors."idBuildings"=${id}`
         const result = await client.query(sql)
         return result.rows
     }
     catch (e) {
-        return console.error('Error while retrieving info about building')
+        return console.error('Error while retrieving info about contractor')
     }
 }
 

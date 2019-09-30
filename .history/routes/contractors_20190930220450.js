@@ -34,10 +34,4 @@ router.put("/edit/:id", async (req, res) => {
     res.redirect('/contractors')
 })
 
-// Delete Contractor
-router.delete("/:id", async (req, res) => {
-    await db.deleteContractor(req.params.id)
-    res.redirect('/contractors')
-})
-
 module.exports = router

@@ -180,17 +180,6 @@ async function deleteContractor(id) {
     }
 }
 
-async function getBuildingDetails(id) {
-    try {
-        let sql = `SELECT * FROM tbl_buildings WHERE tbl_buildings."idBuildings"=${id}`
-        const result = await client.query(sql)
-        return result.rows
-    }
-    catch (e) {
-        return console.error('Error while retrieving info about building')
-    }
-}
-
 
 module.exports.start = start
 module.exports.connect = connect
@@ -205,4 +194,3 @@ module.exports.addNewBuilding = addNewBuilding
 module.exports.getContracorDetails = getContracorDetails
 module.exports.editContractor = editContractor
 module.exports.deleteContractor = deleteContractor
-module.exports.getBuildingDetails = getBuildingDetails

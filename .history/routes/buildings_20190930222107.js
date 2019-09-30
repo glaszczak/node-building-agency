@@ -27,7 +27,7 @@ router.get("/edit/:id", async (req, res) => {
 
 // Process Form - edit existing
 router.put("/edit/:id", async (req, res) => {
-    await db.editBuilding(req.params.id, req.body.city, req.body.address)
+    await db.editContractor(req.params.id, req.body.fullName, req.body.city, req.body.address)
     res.redirect('/buildings')
 })
 

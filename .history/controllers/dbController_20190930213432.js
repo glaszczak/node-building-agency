@@ -160,36 +160,19 @@ async function getContracorDetails(id) {
 
 // Edit Contractor
 async function editContractor(id, fullName, city, address) {
+    console.log(id, fullName, city, address)
     try {
         let newConctractor = [id, fullName, city, address]
-        let sql = `UPDATE tbl_contractors SET "fullName"='${newConctractor[1]}', "city"='${newConctractor[2]}', "address"='${newConctractor[3]}' WHERE "idContractor"=${newConctractor[0]}`
+        console.log(newConctractor)
+        //let sql = 'UPDATE tbl_contractors SET "fullName"=$2, "city"=$3, "address"=$4 WHERE "idContractor"=25'
+        let sql = 'UPDATE tbl_contractors SET "fullName"="edited", "city"="edited city", "address"="edited address" WHERE "idContractor"=47'
         const results = await client.query(sql)
     }
     catch (e) {
         return console.error('Error while editing contractor')
     }
 }
-
-async function deleteContractor(id) {
-    try {
-        let sql = `DELETE FROM tbl_contractors WHERE "idContractor"=${id}`
-        const results = await client.query(sql)
-    }
-    catch (e) {
-        return console.error('Error while deleting contractor')
-    }
-}
-
-async function getBuildingDetails(id) {
-    try {
-        let sql = `SELECT * FROM tbl_buildings WHERE tbl_buildings."idBuildings"=${id}`
-        const result = await client.query(sql)
-        return result.rows
-    }
-    catch (e) {
-        return console.error('Error while retrieving info about building')
-    }
-}
+editContractor
 
 
 module.exports.start = start
@@ -204,5 +187,3 @@ module.exports.addNewContractor = addNewContractor
 module.exports.addNewBuilding = addNewBuilding
 module.exports.getContracorDetails = getContracorDetails
 module.exports.editContractor = editContractor
-module.exports.deleteContractor = deleteContractor
-module.exports.getBuildingDetails = getBuildingDetails

@@ -36,6 +36,7 @@ router.put("/edit/:id", async (req, res) => {
 
 // Delete Contractor
 router.delete("/:id", async (req, res) => {
+    console.log(req.params.id)
     await db.deleteContractor(req.params.id)
     res.redirect('/contractors')
 })
