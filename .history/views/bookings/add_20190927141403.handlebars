@@ -1,0 +1,46 @@
+<div class="card card-body">
+  <h3>
+    New Booking
+  </h3>
+  <form action="/contructors" method="post">
+    <div class="form-group">
+      <label for="fullName">
+        Building
+      </label>
+      <input type="text" class="form-control" name="fullName" required />
+    </div>
+    <div class="form-group">
+      <label for="city">
+        Start date
+      </label>
+      <input type="text" class="form-control" name="city" required />
+    </div>
+    <div class="form-group">
+      <label for="address">
+        Contractor
+      </label>
+      <input type="text" class="form-control" name="address" required />
+    </div>
+    <button class="btn btn-primary">
+      Submit
+    </button>
+  </form>
+</div>
+<div class="dropdownMenus col-md-12">
+  <div class="form-field">
+    <label for="brandFilter">
+      Brand
+    </label>
+    <select id="brandFilter" class="form-control">
+      <option>
+        Choose brand
+      </option>
+      }
+      {{#each shoes}}
+        <option value="{{this}}">
+          {{this.brand}}
+        </option>
+      {{/each}}
+    </select>
+  </div>
+</div>

@@ -1,0 +1,65 @@
+<div class="card card-body">
+  <h3>
+    New Booking
+  </h3>
+  <form action="/contructors" method="post">
+    <div class="form-field mb-2">
+      <label for="buildingFilter">
+        Building
+      </label>
+      <select id="buildingFilter" class="form-control">
+        <option>
+          Choose building
+        </option>
+        {{#each buildings}}
+          <option>
+            {{this.address}}
+          </option>
+        {{/each}}
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="city">
+        Start date
+      </label>
+      <input type="text" class="form-control" name="city" required />
+      <div class="container">
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="form-group">
+              <div class="input-group date" id="datetimepicker1">
+                <input type="text" class="form-control" />
+                <span class="input-group-addon">
+                  <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+              </div>
+            </div>
+          </div>
+          <script type="text/javascript">
+            $(function () {
+                $('#datetimepicker1').datetimepicker();
+            });
+          </script>
+        </div>
+      </div>
+    </div>
+    <div class="form-field mb-2">
+      <label for="contractorFilter">
+        Contractor
+      </label>
+      <select id="contractorFilter" class="form-control">
+        <option>
+          Choose contractor
+        </option>
+        {{#each contractors}}
+          <option>
+            {{this.fullName}}
+          </option>
+        {{/each}}
+      </select>
+    </div>
+    <button class="btn btn-primary">
+      Submit
+    </button>
+  </form>
+</div>

@@ -1,0 +1,46 @@
+<div class="card card-body">
+  <h3>
+    New Booking
+  </h3>
+  <form action="/contructors" method="post">
+    <div class="form-field mb-2">
+      <label for="buildingFilter">
+        Building
+      </label>
+      <select id="buildingFilter" class="form-control">
+        <option>
+          Choose building
+        </option>
+        {{#each buildings}}
+          <option>
+            {{this.address}}
+          </option>
+        {{/each}}
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="city">
+        Start date
+      </label>
+      <input type="text" class="form-control" name="city" required />
+    </div>
+    <div class="form-field mb-2">
+      <label for="contractorFilter">
+        Contractor
+      </label>
+      <select id="contractorFilter" class="form-control">
+        <option>
+          Choose contractor
+        </option>
+        {{#each contractors}}
+          <option>
+            {{this.fullname}}
+          </option>
+        {{/each}}
+      </select>
+    </div>
+    <button class="btn btn-primary">
+      Submit
+    </button>
+  </form>
+</div>
