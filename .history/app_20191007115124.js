@@ -46,9 +46,9 @@ app.use(session({
 //Routes
 // Index Route
 app.get("/", async (req, res) => {
-    const top5_1 = await db.getTopFiveContractorsAll()
-    const top5_2 = await db.getTopFiveContractorsUpcoming()
-    const top5_3 = await db.getTopFiveBuildingsUpcoming()
+    // const top5_1 = await db.getTopFiveContractorsAll()
+    // const top5_2 = await db.getTopFiveContractorsUpcoming()
+    // const top5_3 = await db.getTopFiveBuildingsUpcoming()
     res.render("index", {
         top5_1: top5_1,
         top5_2: top5_2,
