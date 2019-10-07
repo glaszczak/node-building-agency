@@ -195,23 +195,14 @@ async function getBuildingDetails(id) {
 async function editBuilding(id, city, address) {
     try {
         let newBuilding = [id, city, address]
-        let sql = `UPDATE tbl_buildings SET "city"='${newBuilding[1]}', "address"='${newBuilding[2]}' WHERE "idBuildings"=${newBuilding[0]}`
+        let sql = `UPDATE tbl_contractors SET "fullName"='${newConctractor[1]}', "city"='${newConctractor[2]}', "address"='${newConctractor[3]}' WHERE "idContractor"=${newConctractor[0]}`
         const results = await client.query(sql)
     }
     catch (e) {
-        return console.error('Error while editing building')
+        return console.error('Error while editing contractor')
     }
 }
 
-async function deleteBuilding(id) {
-    try {
-        let sql = `DELETE FROM tbl_buildings WHERE "idBuildings"=${id}`
-        const results = await client.query(sql)
-    }
-    catch (e) {
-        return console.error('Error while deleting building')
-    }
-}
 
 module.exports.start = start
 module.exports.connect = connect
@@ -227,5 +218,3 @@ module.exports.getContracorDetails = getContracorDetails
 module.exports.editContractor = editContractor
 module.exports.deleteContractor = deleteContractor
 module.exports.getBuildingDetails = getBuildingDetails
-module.exports.editBuilding = editBuilding
-module.exports.deleteBuilding = deleteBuilding

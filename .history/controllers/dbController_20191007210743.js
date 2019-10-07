@@ -203,15 +203,6 @@ async function editBuilding(id, city, address) {
     }
 }
 
-async function deleteBuilding(id) {
-    try {
-        let sql = `DELETE FROM tbl_buildings WHERE "idBuildings"=${id}`
-        const results = await client.query(sql)
-    }
-    catch (e) {
-        return console.error('Error while deleting building')
-    }
-}
 
 module.exports.start = start
 module.exports.connect = connect
@@ -228,4 +219,3 @@ module.exports.editContractor = editContractor
 module.exports.deleteContractor = deleteContractor
 module.exports.getBuildingDetails = getBuildingDetails
 module.exports.editBuilding = editBuilding
-module.exports.deleteBuilding = deleteBuilding

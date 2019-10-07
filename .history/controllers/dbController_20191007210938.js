@@ -209,7 +209,7 @@ async function deleteBuilding(id) {
         const results = await client.query(sql)
     }
     catch (e) {
-        return console.error('Error while deleting building')
+        return console.error('Error while deleting contractor')
     }
 }
 

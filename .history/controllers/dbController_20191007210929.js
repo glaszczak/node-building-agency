@@ -205,11 +205,11 @@ async function editBuilding(id, city, address) {
 
 async function deleteBuilding(id) {
     try {
-        let sql = `DELETE FROM tbl_buildings WHERE "idBuildings"=${id}`
+        let sql = `DELETE FROM tbl_contractors WHERE "idContractor"=${id}`
         const results = await client.query(sql)
     }
     catch (e) {
-        return console.error('Error while deleting building')
+        return console.error('Error while deleting contractor')
     }
 }
 

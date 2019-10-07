@@ -13,7 +13,7 @@ router.get("/", async (req, res) => {
 // Add booking
 router.get("/add", async (req, res) => {
     const buildings = await db.getBuildings()
-    const contractors = await db.getContractors()
+    const contractors = await db.getContracotrs()
     res.render("bookings/add", { buildings: buildings, contractors: contractors })
 })
 

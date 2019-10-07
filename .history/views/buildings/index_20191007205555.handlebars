@@ -14,12 +14,12 @@
       {{this.address}}
     </p>
     <a
-      href="/buildings/edit/{{idBuildings}}"
+      href="/contractors/edit/{{idContractor}}"
       class="btn btn-dark btn-block mb-2"
     >
       Edit
     </a>
-    <form method="POST" action="/buildings/{{idBuildings}}?_method=DELETE">
+    <form method="post">
       <input type="hidden" name="_method" value="DELETE" />
       <input type="submit" class="btn btn-danger btn-block" value="Delete" />
     </form>
