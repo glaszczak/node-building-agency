@@ -12,6 +12,12 @@ const client = new Client({
     database: process.env.DB_DATABASE
 });
 
+// const client = new Client({
+//     user: "grzegorzlasz_buildingAgencyDB",
+//     password: process.env.DB_PASSWORD,
+//     host: process.env.DB_HOST,
+//     database: process.env.DB_DATABASE
+// });
 
 async function start() {
     await connect()

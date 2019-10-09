@@ -3,6 +3,7 @@ const {
 } = require("pg");
 
 require('dotenv').config()
+//console.log(process.env)
 
 // DB Connection
 const client = new Client({
