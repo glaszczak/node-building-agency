@@ -203,63 +203,63 @@ async function deleteBuilding(id) {
 
 
 async function getBookingForCurrentBuilding(id) {
-    try {
-        let sql = `SELECT tbl_contractors."idContractor", tbl_contractors."fullName", tbl_bookings."fromDate", tbl_bookings."toDate",
-                tbl_buildings."idBuildings", tbl_buildings."city", tbl_buildings."address"
-                FROM tbl_contractors INNER JOIN tbl_bookings ON tbl_contractors."idContractor" = tbl_bookings."idContractor"
-                INNER JOIN tbl_buildings ON tbl_bookings."idBuilding" = tbl_buildings."idBuildings"
-                WHERE tbl_buildings."idBuildings"=${idBuilding}`
-        const result = await client.query(sql)
-        return result.rows
-    } catch (e) {
-        return console.error('Error while retrieving info about building')
+        try {
+            let sql = `DELETE FROM tbl_buildings WHERE "idBuildings"=${id}`
+            const results = await client.query(sql)
+        } catch (e) {
+            return console.error('Error while deleting building')
+        }
     }
-}
 
-async function getBookingForCurrentBuilding(id) {
-    try {
-        let sql = ``
-        const result = await client.query(sql)
-        return result.rows
-    } catch (e) {
-        return console.error('Error while retrieving info about building')
-    }
-}
 
-async function getContractorsOrderedForSelectedPeriod(fromDate, toDate) {
-    try {
-        let sql = `SELECT tbl_bookings."idBookings", tbl_contractors."idContractor", tbl_contractors."fullName", tbl_bookings."fromDate", tbl_bookings."toDate",
-                tbl_buildings."idBuildings", tbl_buildings."city", tbl_buildings."address"
-                FROM tbl_contractors INNER JOIN tbl_bookings ON tbl_contractors."idContractor" = tbl_bookings."idContractor"
-                INNER JOIN tbl_buildings ON tbl_bookings."idBuilding" = tbl_buildings."idBuildings"
-                WHERE
-                (tbl_bookings."fromDate"<'${fromDate}' AND tbl_bookings."toDate">'${toDate}')
-                OR (tbl_bookings."fromDate"<'${fromDate}' AND tbl_bookings."toDate">'${fromDate}')
-                OR (tbl_bookings."fromDate"<'${toDate}' AND tbl_bookings."toDate">'${toDate}')
-                OR (tbl_bookings."fromDate"='${fromDate}' AND tbl_bookings."toDate"='${toDate}')
-                OR ((tbl_bookings."fromDate">'${fromDate}' AND tbl_bookings."fromDate"<'${toDate}') AND tbl_bookings."toDate">'${toDate}')
-                ORDER BY tbl_bookings."idBookings", tbl_contractors."idContractor"`
-        const result = await client.query(sql)
-        return result.rows
-    } catch (e) {
-        return console.error('Error while retrieving info about contractors')
-    }
-}
 
-async function getAvailableContractors(fromDate, toDate) {
-    try {
-        let sql = `SELECT DISTINCT tbl_contractors."idContractor", tbl_contractors."fullName"
-                    FROM tbl_contractors INNER JOIN tbl_bookings ON tbl_contractors."idContractor" = tbl_bookings."idContractor"
-                    INNER JOIN tbl_buildings ON tbl_bookings."idBuilding" = tbl_buildings."idBuildings"
-                    WHERE (tbl_bookings."fromDate">='${fromDate}' AND tbl_bookings."fromDate">'${toDate}')
-                    OR ((tbl_bookings."toDate"<'${fromDate}' OR tbl_bookings."toDate"='${fromDate}') AND tbl_bookings."toDate" <'${toDate}')
-                    ORDER BY tbl_contractors."idContractor"`
-        const result = await client.query(sql)
-        return result.rows
-    } catch (e) {
-        return console.error('Error while retrieving info about building')
-    }
-}
+
+
+    --All
+for that building
+sql = `SELECT tbl_contractors."idContractor", tbl_contractors."fullName", tbl_bookings."fromDate", tbl_bookings."toDate",
+         tbl_buildings."idBuildings", tbl_buildings."city", tbl_buildings."address"
+         FROM tbl_contractors INNER JOIN tbl_bookings ON tbl_contractors."idContractor" = tbl_bookings."idContractor"
+         INNER JOIN tbl_buildings ON tbl_bookings."idBuilding" = tbl_buildings."idBuildings"
+          WHERE tbl_buildings."idBuildings"=${idBuilding}`
+
+    --Ordered
+sql = `SELECT tbl_bookings."idBookings", tbl_contractors."idContractor", tbl_contractors."fullName", tbl_bookings."fromDate", tbl_bookings."toDate",
+         tbl_buildings."idBuildings", tbl_buildings."city", tbl_buildings."address"
+         FROM tbl_contractors INNER JOIN tbl_bookings ON tbl_contractors."idContractor" = tbl_bookings."idContractor"
+         INNER JOIN tbl_buildings ON tbl_bookings."idBuilding" = tbl_buildings."idBuildings"
+         WHERE
+         (tbl_bookings."fromDate"<'${fromDate}' AND tbl_bookings."toDate">'${toDate}')
+         OR (tbl_bookings."fromDate"<'${fromDate}' AND tbl_bookings."toDate">'${fromDate}')
+         OR (tbl_bookings."fromDate"<'${toDate}' AND tbl_bookings."toDate">'${toDate}')
+         OR (tbl_bookings."fromDate"='${fromDate}' AND tbl_bookings."toDate"='${toDate}')
+         OR ((tbl_bookings."fromDate">'${fromDate}' AND tbl_bookings."fromDate"<'${toDate}') AND tbl_bookings."toDate">'${toDate}')
+         ORDER BY tbl_bookings."idBookings", tbl_contractors."idContractor"`
+
+    --Available
+sql = `SELECT tbl_bookings."idBookings", tbl_contractors."idContractor", tbl_contractors."fullName", tbl_bookings."fromDate", tbl_bookings."toDate",
+         tbl_buildings."idBuildings", tbl_buildings."city", tbl_buildings."address"
+         FROM tbl_contractors INNER JOIN tbl_bookings ON tbl_contractors."idContractor" = tbl_bookings."idContractor"
+         INNER JOIN tbl_buildings ON tbl_bookings."idBuilding" = tbl_buildings."idBuildings"
+         WHERE (tbl_bookings."fromDate">='${fromDate}' AND tbl_bookings."fromDate">'${toDate}')
+         OR ((tbl_bookings."toDate"<'${fromDate}' OR tbl_bookings."toDate"='${fromDate}') AND tbl_bookings."toDate" <'${toDate}')
+          ORDER BY tbl_bookings."idBookings", tbl_contractors."idContractor"`
+
+    --Available distinct
+sql = `SELECT DISTINCT tbl_contractors."idContractor", tbl_contractors."fullName"
+         FROM tbl_contractors INNER JOIN tbl_bookings ON tbl_contractors."idContractor" = tbl_bookings."idContractor"
+         INNER JOIN tbl_buildings ON tbl_bookings."idBuilding" = tbl_buildings."idBuildings"
+         WHERE (tbl_bookings."fromDate">='${fromDate}' AND tbl_bookings."fromDate">'${toDate}')
+         OR ((tbl_bookings."toDate"<'${fromDate}' OR tbl_bookings."toDate"='${fromDate}') AND tbl_bookings."toDate" <'${toDate}')
+         ORDER BY tbl_contractors."idContractor"`
+
+
+
+
+
+
+
+
 
 module.exports.start = start
 module.exports.connect = connect
@@ -277,6 +277,3 @@ module.exports.deleteContractor = deleteContractor
 module.exports.getBuildingDetails = getBuildingDetails
 module.exports.editBuilding = editBuilding
 module.exports.deleteBuilding = deleteBuilding
-module.exports.getBookingForCurrentBuilding = getBookingForCurrentBuilding
-module.exports.getContractorsOrderedForSelectedPeriod = getContractorsOrderedForSelectedPeriod
-module.exports.getAvailableContractors = getAvailableContractors
