@@ -17,18 +17,11 @@ router.get("/add", async (req, res) => {
     const buildings = await db.getBuildings()
 
     const contractors = await db.getAvailableContractors()
-
-    if (contractors) {
-        res.render("bookings/add", {
-            buildings: buildings,
-            contractors: contractors
-        })
-    } else {
-        res.render("bookings/add", {
-            buildings: buildings
-        })
-    }
-
+    console.log(contractors)
+    res.render("bookings/add", {
+        buildings: buildings,
+        contractors: contractors
+    })
 })
 
 module.exports = router

@@ -242,7 +242,7 @@ async function getContractorsOrderedForSelectedPeriod(fromDate, toDate) {
         const result = await client.query(sql)
         return result.rows
     } catch (e) {
-        return console.error('Error while retrieving info about ordered contractors.')
+        return console.error('Error while retrieving info about contractors')
     }
 }
 

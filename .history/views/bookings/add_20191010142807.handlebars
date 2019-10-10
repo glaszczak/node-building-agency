@@ -2,7 +2,7 @@
   <h3>
     New Booking
   </h3>
-  <form action="/bookings/add/{{buildings.idBuildings}}" method="post">
+  <form action="/contructors" method="post">
     <div class="form-field mb-2">
       <label for="buildingFilter">
         Building
@@ -30,6 +30,7 @@
       </label>
       <input type="date" class="form-control" name="endDate" required />
     </div>
+
     {{#if contractors}}
     <div class="form-field mb-2">
       <label for="contractorFilter">
@@ -46,15 +47,10 @@
         {{/each}}
       </select>
     </div>
-    <button class="btn btn-primary">
-      Submit
-    </button>
-    {{else}}
+    {{/if}}
+
   </form>
-  <form action="/bookings/add/contractors">
-    <button class="btn btn-primary">
-      Search for contractors
-    </button>
-  </form>
-  {{/if}}
+  <button action="/contructors" class="btn btn-primary">
+    Search for contractors
+  </button>
 </div>
