@@ -23,7 +23,7 @@ router.get("/add", async (req, res) => {
 
 })
 
-router.post("/add/:id", async (req, res) => {
+router.post("/add", async (req, res) => {
 
     const contractors = await db.getAvailableContractors(req.body.startDate, req.body.endDate)
 

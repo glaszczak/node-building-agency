@@ -23,28 +23,27 @@ router.get("/add", async (req, res) => {
 
 })
 
-router.post("/add/:id", async (req, res) => {
+router.post("/add", async (req, res) => {
 
     const contractors = await db.getAvailableContractors(req.body.startDate, req.body.endDate)
 
-    console.log(req.body)
+    // req.body.selectBuilding
+    // req.body.selectContractor
 
-    res.render("bookings/add", {
-        building: req.body.selectBuilding,
-        contractors: contractors,
-        startDate: req.body.startDate,
-        endDate: req.body.endDate
-    })
+    // res.send(req.body)
 
-})
+    if (contractors) {
+        res.render("bookings/add", {
+            buildings: buildings,
+            contractors: contractors
+        })
+    } else {
+        res.render("bookings/add", {
+            buildings: buildings
+        })
+    }
 
-router.post("/add/newBooking", async (req, res) => {
 
-    // await db.addNewBooking(req.body.building, req.body.startDate, req.body.endDate, req.body.selectContractor)
-    console.log(req.body)
-    res.send(req.body.building)
-
-    // res.redirect('/')
 
 })
 

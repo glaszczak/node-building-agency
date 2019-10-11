@@ -2,25 +2,35 @@
   <h3>
     New Booking
   </h3>
-  <form action="/bookings/add/newBooking" method="post">
+  <form action="/bookings/add/" method="post">
     <div class="form-field mb-2">
-      <label for="building">
+      <label for="buildingFilter">
         Building
       </label>
-      <input type="text" class="form-control" name="building" value='{{building}}' readonly=true required />
+      <select id="buildingFilter" class="form-control" name="selectBuilding">
+        <option>
+          Choose building
+        </option>
+        {{#each buildings}}
+        <option>
+          {{this.address}}
+        </option>
+        {{/each}}
+      </select>
     </div>
     <div class="form-group mb-2">
       <label for="startDate">
         Start date
       </label>
-      <input type="date" class="form-control" name="startDate" value={{startDate}} readonly=true required />
+      <input type="date" class="form-control" name="startDate" required />
     </div>
     <div class="form-group mb-2">
       <label for="endDate">
         End date
       </label>
-      <input type="date" class="form-control" name="endDate" value={{endDate}} readonly=true required />
+      <input type="date" class="form-control" name="endDate" required />
     </div>
+    {{#if contractors}}
     <div class="form-field mb-2">
       <label for="contractorFilter">
         Available Contractors
@@ -39,5 +49,13 @@
     <button class="btn btn-primary mb-3">
       Submit
     </button>
+    {{> _availableContractors}}
+    {{else}}
   </form>
+  <form action="/bookings/add/fromDate='{{this.endDate}}'&toDate='{{this.model.endDateVal}}'">
+    <button class="btn btn-primary">
+      Search for contractors
+    </button>
+  </form>
+  {{/if}}
 </div>

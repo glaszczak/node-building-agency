@@ -261,11 +261,11 @@ async function getAvailableContractors(fromDate, toDate) {
     }
 }
 
-async function addNewBooking(fromDate, toDate, idContractor, idBuilding) {
+asyncfunction addNewBooking() {
     try {
         let newBooking = [fromDate, toDate, idContractor, idBuilding]
         let sql = 'INSERT INTO tbl_bookings ("fromDate", "toDate", "idContractor", "idBuilding") VALUES($1, $2, $3, $4) RETURNING *'
-        const results = await client.query(sql, newBooking)
+        const results = await client.query(sql, newBuilding)
     } catch (e) {
         return console.error('Error while adding new booking.')
     }
