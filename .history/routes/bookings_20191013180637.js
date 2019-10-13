@@ -37,6 +37,7 @@ router.post("/add/", async (req, res) => {
 })
 
 router.post("/add/newBooking", async (req, res) => {
+
     const buildingId = await db.getBuildingID(req.body.building)
     const contractorId = await db.getContractorID(req.body.selectContractor)
 
@@ -44,6 +45,9 @@ router.post("/add/newBooking", async (req, res) => {
 
     await console.log(`building${buildingId}, contractor:${contractorId}`)
     res.redirect('/')
+
+    // res.redirect('/')
+
 })
 
 

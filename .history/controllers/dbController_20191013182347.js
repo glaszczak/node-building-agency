@@ -264,19 +264,13 @@ async function getContractorsOrderedForSelectedPeriod(fromDate, toDate) {
 
 async function getAvailableContractors(fromDate, toDate) {
     try {
-        // let sql = `SELECT DISTINCT tbl_contractors."idContractor", tbl_contractors."fullName"
-        //             FROM tbl_contractors INNER JOIN tbl_bookings ON tbl_contractors."idContractor" = tbl_bookings."idContractor"
-        //             INNER JOIN tbl_buildings ON tbl_bookings."idBuilding" = tbl_buildings."idBuildings"
-        //             WHERE (tbl_bookings."fromDate"<'${fromDate}' AND tbl_bookings."toDate"<='${fromDate}')
-        //             OR (tbl_bookings."fromDate">='${toDate}' AND tbl_bookings."toDate">'${toDate}')
-        //             ORDER BY tbl_contractors."idContractor"`
         let sql = `SELECT DISTINCT tbl_contractors."idContractor", tbl_contractors."fullName"
                     FROM tbl_contractors INNER JOIN tbl_bookings ON tbl_contractors."idContractor" = tbl_bookings."idContractor"
-                    LEFT JOIN tbl_buildings ON tbl_bookings."idBuilding" = tbl_buildings."idBuildings"
+                    INNER JOIN tbl_buildings ON tbl_bookings."idBuilding" = tbl_buildings."idBuildings"
                     WHERE (tbl_bookings."fromDate"<'${fromDate}' AND tbl_bookings."toDate"<='${fromDate}')
                     OR (tbl_bookings."fromDate">='${toDate}' AND tbl_bookings."toDate">'${toDate}')
                     ORDER BY tbl_contractors."idContractor"`
-        // console.log(sql)
+        console.log(sql)
         const result = await client.query(sql)
         return result.rows
     } catch (e) {

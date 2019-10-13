@@ -276,7 +276,7 @@ async function getAvailableContractors(fromDate, toDate) {
                     WHERE (tbl_bookings."fromDate"<'${fromDate}' AND tbl_bookings."toDate"<='${fromDate}')
                     OR (tbl_bookings."fromDate">='${toDate}' AND tbl_bookings."toDate">'${toDate}')
                     ORDER BY tbl_contractors."idContractor"`
-        // console.log(sql)
+        console.log(sql)
         const result = await client.query(sql)
         return result.rows
     } catch (e) {

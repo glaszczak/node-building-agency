@@ -210,8 +210,13 @@ async function deleteBuilding(id) {
 
 async function getBuildingID(address) {
     try {
-        const results = await client.query(`SELECT "idBuildings" FROM tbl_buildings WHERE "address"='${address}'`)
-        return results.rows[0].idBuildings
+        console.log(address)
+        let sql = `SELECT "idBuildings" FROM tbl_buildings WHERE "address"='${address}'`
+        console.log(sql)
+
+        const results = await client.query(sql)
+        // return results.rows[0].idContractor
+        return results.rows
     } catch (e) {
         return []
     }
@@ -264,19 +269,12 @@ async function getContractorsOrderedForSelectedPeriod(fromDate, toDate) {
 
 async function getAvailableContractors(fromDate, toDate) {
     try {
-        // let sql = `SELECT DISTINCT tbl_contractors."idContractor", tbl_contractors."fullName"
-        //             FROM tbl_contractors INNER JOIN tbl_bookings ON tbl_contractors."idContractor" = tbl_bookings."idContractor"
-        //             INNER JOIN tbl_buildings ON tbl_bookings."idBuilding" = tbl_buildings."idBuildings"
-        //             WHERE (tbl_bookings."fromDate"<'${fromDate}' AND tbl_bookings."toDate"<='${fromDate}')
-        //             OR (tbl_bookings."fromDate">='${toDate}' AND tbl_bookings."toDate">'${toDate}')
-        //             ORDER BY tbl_contractors."idContractor"`
         let sql = `SELECT DISTINCT tbl_contractors."idContractor", tbl_contractors."fullName"
                     FROM tbl_contractors INNER JOIN tbl_bookings ON tbl_contractors."idContractor" = tbl_bookings."idContractor"
-                    LEFT JOIN tbl_buildings ON tbl_bookings."idBuilding" = tbl_buildings."idBuildings"
-                    WHERE (tbl_bookings."fromDate"<'${fromDate}' AND tbl_bookings."toDate"<='${fromDate}')
-                    OR (tbl_bookings."fromDate">='${toDate}' AND tbl_bookings."toDate">'${toDate}')
+                    INNER JOIN tbl_buildings ON tbl_bookings."idBuilding" = tbl_buildings."idBuildings"
+                    WHERE (tbl_bookings."fromDate">='${fromDate}' AND tbl_bookings."fromDate">'${toDate}')
+                    OR ((tbl_bookings."toDate"<'${fromDate}' OR tbl_bookings."toDate"='${fromDate}') AND tbl_bookings."toDate" <'${toDate}')
                     ORDER BY tbl_contractors."idContractor"`
-        // console.log(sql)
         const result = await client.query(sql)
         return result.rows
     } catch (e) {
@@ -284,10 +282,10 @@ async function getAvailableContractors(fromDate, toDate) {
     }
 }
 
-async function addNewBooking(idBuilding, fromDate, toDate, idContractor) {
+async function addNewBooking(fromDate, toDate, idContractor, idBuilding) {
     try {
-        let newBooking = [idBuilding, fromDate, toDate, idContractor]
-        let sql = 'INSERT INTO tbl_bookings ("fromDate", "toDate", "idContractor", "idBuilding") VALUES($2, $3, $4, $1) RETURNING *'
+        let newBooking = [fromDate, toDate, idContractor, idBuilding]
+        let sql = 'INSERT INTO tbl_bookings ("fromDate", "toDate", "idContractor", "idBuilding") VALUES($1, $2, $3, $4) RETURNING *'
         const results = await client.query(sql, newBooking)
     } catch (e) {
         return console.error('Error while adding new booking.')

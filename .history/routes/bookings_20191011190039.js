@@ -27,6 +27,8 @@ router.post("/add/", async (req, res) => {
 
     const contractors = await db.getAvailableContractors(req.body.startDate, req.body.endDate)
 
+    console.log(req.body)
+
     res.render("bookings/add", {
         building: req.body.selectBuilding,
         contractors: contractors,
@@ -37,13 +39,19 @@ router.post("/add/", async (req, res) => {
 })
 
 router.post("/add/newBooking", async (req, res) => {
+
+    console.log(`building${req.body.building}, contractor:${req.body.selectContractor}`)
+
     const buildingId = await db.getBuildingID(req.body.building)
     const contractorId = await db.getContractorID(req.body.selectContractor)
 
-    await db.addNewBooking(buildingId, req.body.startDate, req.body.endDate, contractorId)
+    //await db.addNewBooking(buildingId, req.body.startDate, req.body.endDate, contractorId)
 
-    await console.log(`building${buildingId}, contractor:${contractorId}`)
-    res.redirect('/')
+    console.log(`building${buildingId}, contractor:${contractorId}`)
+    res.send(req.body.building)
+
+    // res.redirect('/')
+
 })
 
 
