@@ -1,0 +1,28 @@
+<div class="jumbotron text-center">
+  <a href="contractors/add" class="btn btn-dark btn-lg">
+    Add contractor
+  </a>
+</div>
+{{#each contractors}}
+  <div class="card card-body mb-2">
+    <h5>
+      {{this.fullName}}
+    </h5>
+    <p>
+      Address:
+      {{this.address}}
+      ,
+      {{this.city}}
+    </p>
+    <a
+      class="btn btn-dark btn-block mb-2"
+      href="/contractors/edit/{{idContractor}}"
+    >
+      Edit
+    </a>
+    <form method="POST" action="/contractors/{{idContractor}}?_method=DELETE">
+      <input type="hidden" name="_method" value="DELETE" />
+      <input type="submit" class="btn btn-danger btn-block" value="Delete" />
+    </form>
+  </div>
+{{/each}}
