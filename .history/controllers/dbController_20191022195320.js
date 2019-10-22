@@ -149,26 +149,8 @@ async function getAvailableContractors(fromDate, toDate) {
                     OR
                     (tbl_bookings."fromDate">='${toDate}' AND tbl_bookings."toDate">'${toDate}')
                     ORDER BY tbl_contractors."idContractor"`
-        // sql = `SELECT * FROM tbl_bookings WHERE (tbl_bookings."fromDate"='${fromDate}')`
+        console.log(sql)
         const result = await client.query(sql)
-
-        // const resultArr = result.rows.map((record) => {
-        //     const idContractor = record.idContractor
-        //     const dbFromDate = record.fromDate
-        //     const dbToDate = record.toDate
-        //     // return record.fromDate > '2019-05-01'
-        //     // if ((dbFromDate < fromDate && dbToDate <= fromDate) || (dbFromDate >= toDate && dbToDate > toDate)) {
-        //     // console.log(`dbFromDate:${dbFromDate} ; fromDate:${fromDate}`)
-
-        //     if (dbFromDate == fromDate) {
-        //         console.log(`dbFromDate:${dbFromDate} ; fromDate:${fromDate}`)
-        //         return {
-        //             idContractor: idContractor
-        //         }
-
-        //     }
-        // })
-
         return result.rows
     } catch (e) {
         return console.error('Error while retrieving info about available contractors.')

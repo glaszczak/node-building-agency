@@ -26,20 +26,34 @@ async function connect() {
 }
 
 
-// ***************** CONTRACTORS *****************
-async function getContractors() {
+
+
+async function getBuildings() {
     try {
-        const results = await client.query(`SELECT * FROM tbl_contractors ORDER BY tbl_contractors."fullName"`)
+        const results = await client.query(`SELECT * FROM tbl_buildings ORDER BY tbl_buildings."address"`)
         return results.rows
     } catch (e) {
         return []
     }
 }
 
-async function getContractorID(contractorName) {
+async function getBookings() {
     try {
-        const results = await client.query(`SELECT "idContractor" FROM tbl_contractors WHERE "fullName"='${contractorName}'`)
-        return results.rows[0].idContractor
+        let sql = `SELECT tbl_bookings."toDate",
+            tbl_bookings."fromDate",
+            tbl_buildings."city",
+            tbl_buildings."address",
+            tbl_contractors."city" AS public_tbl_contractors_city2,
+            tbl_contractors."address" AS public_tbl_contractors_address2,
+            tbl_contractors."fullName"
+            FROM tbl_bookings
+            JOIN tbl_contractors ON tbl_bookings."idContractor" = tbl_contractors."idContractor"
+            JOIN tbl_buildings ON tbl_bookings."idBuilding" = tbl_buildings."idBuildings"
+            ORDER BY tbl_buildings."address"`
+
+        const results = await client.query(sql)
+        //console.log(results.rows[1].fullname)
+        return results.rows
     } catch (e) {
         return []
     }
@@ -78,6 +92,24 @@ async function getTopFiveContractorsUpcoming() {
     }
 }
 
+// To get TOP 5 Buildings - upcoming bookings
+async function getTopFiveBuildingsUpcoming() {
+    try {
+        let sql = `SELECT
+        tbl_buildings."address",
+        COUNT(tbl_bookings."idBuilding") AS sumofbuildings
+        FROM tbl_bookings
+        JOIN tbl_buildings ON tbl_bookings."idBuilding" = tbl_buildings."idBuildings"
+        WHERE tbl_bookings."fromDate" > now()
+        GROUP BY tbl_bookings."idBuilding",tbl_buildings."address"
+        ORDER BY sumofbuildings DESC LIMIT 5`
+        const results = await client.query(sql)
+        return results.rows
+    } catch (e) {
+        return []
+    }
+}
+
 // Add New Contractor
 async function addNewContractor(fullName, city, address) {
     //console.log(fullName, city, address)
@@ -88,6 +120,19 @@ async function addNewContractor(fullName, city, address) {
     } catch (e) {
         return console.error('Error while adding new contractor')
     }
+}
+
+// Add New Building
+async function addNewBuilding(city, address) {
+    //console.log(fullName, city, address)
+    try {
+        let newBuilding = [city, address]
+        let sql = 'INSERT INTO tbl_buildings ("city", "address") VALUES($1, $2) RETURNING *'
+        const results = await client.query(sql, newBuilding)
+    } catch (e) {
+        return console.error('Error while adding new building')
+    }
+
 }
 
 async function getContracorDetails(id) {
@@ -117,127 +162,6 @@ async function deleteContractor(id) {
     } catch (e) {
         return console.error('Error while deleting contractor')
     }
-}
-
-async function getContractorsOrderedForSelectedPeriod(fromDate, toDate) {
-    try {
-        let sql = `SELECT tbl_bookings."idBookings", tbl_contractors."idContractor", tbl_contractors."fullName", tbl_bookings."fromDate", tbl_bookings."toDate",
-                tbl_buildings."idBuildings", tbl_buildings."city", tbl_buildings."address"
-                FROM tbl_contractors INNER JOIN tbl_bookings ON tbl_contractors."idContractor" = tbl_bookings."idContractor"
-                INNER JOIN tbl_buildings ON tbl_bookings."idBuilding" = tbl_buildings."idBuildings"
-                WHERE
-                (tbl_bookings."fromDate"<'${fromDate}' AND tbl_bookings."toDate">'${toDate}')
-                OR (tbl_bookings."fromDate"<'${fromDate}' AND tbl_bookings."toDate">'${fromDate}')
-                OR (tbl_bookings."fromDate"<'${toDate}' AND tbl_bookings."toDate">'${toDate}')
-                OR (tbl_bookings."fromDate"='${fromDate}' AND tbl_bookings."toDate"='${toDate}')
-                OR ((tbl_bookings."fromDate">'${fromDate}' AND tbl_bookings."fromDate"<'${toDate}') AND tbl_bookings."toDate">'${toDate}')
-                ORDER BY tbl_bookings."idBookings", tbl_contractors."idContractor"`
-        const result = await client.query(sql)
-        return result.rows
-    } catch (e) {
-        return console.error('Error while retrieving info about ordered contractors.')
-    }
-}
-
-async function getAvailableContractors(fromDate, toDate) {
-    try {
-        let sql = `SELECT DISTINCT tbl_contractors."idContractor", tbl_contractors."fullName"
-                    FROM tbl_contractors INNER JOIN tbl_bookings ON tbl_contractors."idContractor" = tbl_bookings."idContractor"
-                    LEFT JOIN tbl_buildings ON tbl_bookings."idBuilding" = tbl_buildings."idBuildings"
-                    WHERE
-                    (tbl_bookings."fromDate"<'${fromDate}' AND tbl_bookings."toDate"<='${fromDate}')
-                    OR
-                    (tbl_bookings."fromDate">='${toDate}' AND tbl_bookings."toDate">'${toDate}')
-                    ORDER BY tbl_contractors."idContractor"`
-        // sql = `SELECT * FROM tbl_bookings WHERE (tbl_bookings."fromDate"='${fromDate}')`
-        const result = await client.query(sql)
-
-        // const resultArr = result.rows.map((record) => {
-        //     const idContractor = record.idContractor
-        //     const dbFromDate = record.fromDate
-        //     const dbToDate = record.toDate
-        //     // return record.fromDate > '2019-05-01'
-        //     // if ((dbFromDate < fromDate && dbToDate <= fromDate) || (dbFromDate >= toDate && dbToDate > toDate)) {
-        //     // console.log(`dbFromDate:${dbFromDate} ; fromDate:${fromDate}`)
-
-        //     if (dbFromDate == fromDate) {
-        //         console.log(`dbFromDate:${dbFromDate} ; fromDate:${fromDate}`)
-        //         return {
-        //             idContractor: idContractor
-        //         }
-
-        //     }
-        // })
-
-        return result.rows
-    } catch (e) {
-        return console.error('Error while retrieving info about available contractors.')
-    }
-}
-
-
-
-// ***************** BUILDINGS *****************
-async function getBuildings() {
-    try {
-        const results = await client.query(`SELECT * FROM tbl_buildings ORDER BY tbl_buildings."address"`)
-        return results.rows
-    } catch (e) {
-        return []
-    }
-}
-
-async function getBookings() {
-    try {
-        let sql = `SELECT tbl_bookings."toDate",
-            tbl_bookings."fromDate",
-            tbl_buildings."city",
-            tbl_buildings."address",
-            tbl_contractors."city" AS public_tbl_contractors_city2,
-            tbl_contractors."address" AS public_tbl_contractors_address2,
-            tbl_contractors."fullName"
-            FROM tbl_bookings
-            JOIN tbl_contractors ON tbl_bookings."idContractor" = tbl_contractors."idContractor"
-            JOIN tbl_buildings ON tbl_bookings."idBuilding" = tbl_buildings."idBuildings"
-            ORDER BY tbl_buildings."address"`
-
-        const results = await client.query(sql)
-        //console.log(results.rows[1].fullname)
-        return results.rows
-    } catch (e) {
-        return []
-    }
-}
-
-// To get TOP 5 Buildings - upcoming bookings
-async function getTopFiveBuildingsUpcoming() {
-    try {
-        let sql = `SELECT
-        tbl_buildings."address",
-        COUNT(tbl_bookings."idBuilding") AS sumofbuildings
-        FROM tbl_bookings
-        JOIN tbl_buildings ON tbl_bookings."idBuilding" = tbl_buildings."idBuildings"
-        WHERE tbl_bookings."fromDate" > now()
-        GROUP BY tbl_bookings."idBuilding",tbl_buildings."address"
-        ORDER BY sumofbuildings DESC LIMIT 5`
-        const results = await client.query(sql)
-        return results.rows
-    } catch (e) {
-        return []
-    }
-}
-
-// Add New Building
-async function addNewBuilding(city, address) {
-    //console.log(fullName, city, address)
-    try {
-        let newBuilding = [city, address]
-        let sql = 'INSERT INTO tbl_buildings ("city", "address") VALUES($1, $2) RETURNING *'
-        const results = await client.query(sql, newBuilding)
-    } catch (e) {
-        return console.error('Error while adding new building')
-    }
-
 }
 
 async function getBuildingDetails(id) {
@@ -279,8 +203,6 @@ async function getBuildingID(address) {
 }
 
 
-
-// ***************** BOOKINGS *****************
 async function getBookingForCurrentBuilding(id) {
     try {
         let sql = `SELECT tbl_contractors."idContractor", tbl_contractors."fullName", tbl_bookings."fromDate", tbl_bookings."toDate",
@@ -305,6 +227,48 @@ async function getBookingForCurrentBuilding(id) {
     }
 }
 
+async function getContractorsOrderedForSelectedPeriod(fromDate, toDate) {
+    try {
+        let sql = `SELECT tbl_bookings."idBookings", tbl_contractors."idContractor", tbl_contractors."fullName", tbl_bookings."fromDate", tbl_bookings."toDate",
+                tbl_buildings."idBuildings", tbl_buildings."city", tbl_buildings."address"
+                FROM tbl_contractors INNER JOIN tbl_bookings ON tbl_contractors."idContractor" = tbl_bookings."idContractor"
+                INNER JOIN tbl_buildings ON tbl_bookings."idBuilding" = tbl_buildings."idBuildings"
+                WHERE
+                (tbl_bookings."fromDate"<'${fromDate}' AND tbl_bookings."toDate">'${toDate}')
+                OR (tbl_bookings."fromDate"<'${fromDate}' AND tbl_bookings."toDate">'${fromDate}')
+                OR (tbl_bookings."fromDate"<'${toDate}' AND tbl_bookings."toDate">'${toDate}')
+                OR (tbl_bookings."fromDate"='${fromDate}' AND tbl_bookings."toDate"='${toDate}')
+                OR ((tbl_bookings."fromDate">'${fromDate}' AND tbl_bookings."fromDate"<'${toDate}') AND tbl_bookings."toDate">'${toDate}')
+                ORDER BY tbl_bookings."idBookings", tbl_contractors."idContractor"`
+        const result = await client.query(sql)
+        return result.rows
+    } catch (e) {
+        return console.error('Error while retrieving info about ordered contractors.')
+    }
+}
+
+async function getAvailableContractors(fromDate, toDate) {
+    try {
+        // let sql = `SELECT DISTINCT tbl_contractors."idContractor", tbl_contractors."fullName"
+        //             FROM tbl_contractors INNER JOIN tbl_bookings ON tbl_contractors."idContractor" = tbl_bookings."idContractor"
+        //             INNER JOIN tbl_buildings ON tbl_bookings."idBuilding" = tbl_buildings."idBuildings"
+        //             WHERE (tbl_bookings."fromDate"<'${fromDate}' AND tbl_bookings."toDate"<='${fromDate}')
+        //             OR (tbl_bookings."fromDate">='${toDate}' AND tbl_bookings."toDate">'${toDate}')
+        //             ORDER BY tbl_contractors."idContractor"`
+        let sql = `SELECT DISTINCT tbl_contractors."idContractor", tbl_contractors."fullName"
+                    FROM tbl_contractors INNER JOIN tbl_bookings ON tbl_contractors."idContractor" = tbl_bookings."idContractor"
+                    LEFT JOIN tbl_buildings ON tbl_bookings."idBuilding" = tbl_buildings."idBuildings"
+                    WHERE (tbl_bookings."fromDate"<'${fromDate}' AND tbl_bookings."toDate"<='${fromDate}')
+                    OR (tbl_bookings."fromDate">='${toDate}' AND tbl_bookings."toDate">'${toDate}')
+                    ORDER BY tbl_contractors."idContractor"`
+        // console.log(sql)
+        const result = await client.query(sql)
+        return result.rows
+    } catch (e) {
+        return console.error('Error while retrieving info about available contractors.')
+    }
+}
+
 async function addNewBooking(idBuilding, fromDate, toDate, idContractor) {
     try {
         let newBooking = [idBuilding, fromDate, toDate, idContractor]
@@ -318,23 +282,23 @@ async function addNewBooking(idBuilding, fromDate, toDate, idContractor) {
 
 module.exports.start = start
 module.exports.connect = connect
-module.exports.getContractors = getContractors
+// module.exports.getContractors = getContractors
+module.exports.getBuildings = getBuildings
+module.exports.getBookings = getBookings
 module.exports.getTopFiveContractorsAll = getTopFiveContractorsAll
 module.exports.getTopFiveContractorsUpcoming = getTopFiveContractorsUpcoming
+module.exports.getTopFiveBuildingsUpcoming = getTopFiveBuildingsUpcoming
 module.exports.addNewContractor = addNewContractor
+module.exports.addNewBuilding = addNewBuilding
 module.exports.getContracorDetails = getContracorDetails
 module.exports.editContractor = editContractor
 module.exports.deleteContractor = deleteContractor
-module.exports.getContractorsOrderedForSelectedPeriod = getContractorsOrderedForSelectedPeriod
-module.exports.getAvailableContractors = getAvailableContractors
-module.exports.getContractorID = getContractorID
-module.exports.getBuildings = getBuildings
-module.exports.getTopFiveBuildingsUpcoming = getTopFiveBuildingsUpcoming
-module.exports.addNewBuilding = addNewBuilding
 module.exports.getBuildingDetails = getBuildingDetails
 module.exports.editBuilding = editBuilding
 module.exports.deleteBuilding = deleteBuilding
-module.exports.getBuildingID = getBuildingID
-module.exports.getBookings = getBookings
 module.exports.getBookingForCurrentBuilding = getBookingForCurrentBuilding
+module.exports.getContractorsOrderedForSelectedPeriod = getContractorsOrderedForSelectedPeriod
+module.exports.getAvailableContractors = getAvailableContractors
 module.exports.addNewBooking = addNewBooking
+// module.exports.getContractorID = getContractorID
+module.exports.getBuildingID = getBuildingID

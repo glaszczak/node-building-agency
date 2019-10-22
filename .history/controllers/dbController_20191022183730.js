@@ -90,90 +90,11 @@ async function addNewContractor(fullName, city, address) {
     }
 }
 
-async function getContracorDetails(id) {
-    try {
-        let sql = `SELECT * FROM tbl_contractors WHERE tbl_contractors."idContractor"=${id}`
-        const result = await client.query(sql)
-        return result.rows
-    } catch (e) {
-        return console.error('Error while retrieving info about contractor')
-    }
-}
 
-async function editContractor(id, fullName, city, address) {
-    try {
-        let newConctractor = [id, fullName, city, address]
-        let sql = `UPDATE tbl_contractors SET "fullName"='${newConctractor[1]}', "city"='${newConctractor[2]}', "address"='${newConctractor[3]}' WHERE "idContractor"=${newConctractor[0]}`
-        const results = await client.query(sql)
-    } catch (e) {
-        return console.error('Error while editing contractor')
-    }
-}
 
-async function deleteContractor(id) {
-    try {
-        let sql = `DELETE FROM tbl_contractors WHERE "idContractor"=${id}`
-        const results = await client.query(sql)
-    } catch (e) {
-        return console.error('Error while deleting contractor')
-    }
-}
 
-async function getContractorsOrderedForSelectedPeriod(fromDate, toDate) {
-    try {
-        let sql = `SELECT tbl_bookings."idBookings", tbl_contractors."idContractor", tbl_contractors."fullName", tbl_bookings."fromDate", tbl_bookings."toDate",
-                tbl_buildings."idBuildings", tbl_buildings."city", tbl_buildings."address"
-                FROM tbl_contractors INNER JOIN tbl_bookings ON tbl_contractors."idContractor" = tbl_bookings."idContractor"
-                INNER JOIN tbl_buildings ON tbl_bookings."idBuilding" = tbl_buildings."idBuildings"
-                WHERE
-                (tbl_bookings."fromDate"<'${fromDate}' AND tbl_bookings."toDate">'${toDate}')
-                OR (tbl_bookings."fromDate"<'${fromDate}' AND tbl_bookings."toDate">'${fromDate}')
-                OR (tbl_bookings."fromDate"<'${toDate}' AND tbl_bookings."toDate">'${toDate}')
-                OR (tbl_bookings."fromDate"='${fromDate}' AND tbl_bookings."toDate"='${toDate}')
-                OR ((tbl_bookings."fromDate">'${fromDate}' AND tbl_bookings."fromDate"<'${toDate}') AND tbl_bookings."toDate">'${toDate}')
-                ORDER BY tbl_bookings."idBookings", tbl_contractors."idContractor"`
-        const result = await client.query(sql)
-        return result.rows
-    } catch (e) {
-        return console.error('Error while retrieving info about ordered contractors.')
-    }
-}
 
-async function getAvailableContractors(fromDate, toDate) {
-    try {
-        let sql = `SELECT DISTINCT tbl_contractors."idContractor", tbl_contractors."fullName"
-                    FROM tbl_contractors INNER JOIN tbl_bookings ON tbl_contractors."idContractor" = tbl_bookings."idContractor"
-                    LEFT JOIN tbl_buildings ON tbl_bookings."idBuilding" = tbl_buildings."idBuildings"
-                    WHERE
-                    (tbl_bookings."fromDate"<'${fromDate}' AND tbl_bookings."toDate"<='${fromDate}')
-                    OR
-                    (tbl_bookings."fromDate">='${toDate}' AND tbl_bookings."toDate">'${toDate}')
-                    ORDER BY tbl_contractors."idContractor"`
-        // sql = `SELECT * FROM tbl_bookings WHERE (tbl_bookings."fromDate"='${fromDate}')`
-        const result = await client.query(sql)
 
-        // const resultArr = result.rows.map((record) => {
-        //     const idContractor = record.idContractor
-        //     const dbFromDate = record.fromDate
-        //     const dbToDate = record.toDate
-        //     // return record.fromDate > '2019-05-01'
-        //     // if ((dbFromDate < fromDate && dbToDate <= fromDate) || (dbFromDate >= toDate && dbToDate > toDate)) {
-        //     // console.log(`dbFromDate:${dbFromDate} ; fromDate:${fromDate}`)
-
-        //     if (dbFromDate == fromDate) {
-        //         console.log(`dbFromDate:${dbFromDate} ; fromDate:${fromDate}`)
-        //         return {
-        //             idContractor: idContractor
-        //         }
-
-        //     }
-        // })
-
-        return result.rows
-    } catch (e) {
-        return console.error('Error while retrieving info about available contractors.')
-    }
-}
 
 
 
@@ -240,6 +161,35 @@ async function addNewBuilding(city, address) {
 
 }
 
+async function getContracorDetails(id) {
+    try {
+        let sql = `SELECT * FROM tbl_contractors WHERE tbl_contractors."idContractor"=${id}`
+        const result = await client.query(sql)
+        return result.rows
+    } catch (e) {
+        return console.error('Error while retrieving info about contractor')
+    }
+}
+
+async function editContractor(id, fullName, city, address) {
+    try {
+        let newConctractor = [id, fullName, city, address]
+        let sql = `UPDATE tbl_contractors SET "fullName"='${newConctractor[1]}', "city"='${newConctractor[2]}', "address"='${newConctractor[3]}' WHERE "idContractor"=${newConctractor[0]}`
+        const results = await client.query(sql)
+    } catch (e) {
+        return console.error('Error while editing contractor')
+    }
+}
+
+async function deleteContractor(id) {
+    try {
+        let sql = `DELETE FROM tbl_contractors WHERE "idContractor"=${id}`
+        const results = await client.query(sql)
+    } catch (e) {
+        return console.error('Error while deleting contractor')
+    }
+}
+
 async function getBuildingDetails(id) {
     try {
         let sql = `SELECT * FROM tbl_buildings WHERE tbl_buildings."idBuildings"=${id}`
@@ -280,6 +230,7 @@ async function getBuildingID(address) {
 
 
 
+
 // ***************** BOOKINGS *****************
 async function getBookingForCurrentBuilding(id) {
     try {
@@ -305,6 +256,48 @@ async function getBookingForCurrentBuilding(id) {
     }
 }
 
+async function getContractorsOrderedForSelectedPeriod(fromDate, toDate) {
+    try {
+        let sql = `SELECT tbl_bookings."idBookings", tbl_contractors."idContractor", tbl_contractors."fullName", tbl_bookings."fromDate", tbl_bookings."toDate",
+                tbl_buildings."idBuildings", tbl_buildings."city", tbl_buildings."address"
+                FROM tbl_contractors INNER JOIN tbl_bookings ON tbl_contractors."idContractor" = tbl_bookings."idContractor"
+                INNER JOIN tbl_buildings ON tbl_bookings."idBuilding" = tbl_buildings."idBuildings"
+                WHERE
+                (tbl_bookings."fromDate"<'${fromDate}' AND tbl_bookings."toDate">'${toDate}')
+                OR (tbl_bookings."fromDate"<'${fromDate}' AND tbl_bookings."toDate">'${fromDate}')
+                OR (tbl_bookings."fromDate"<'${toDate}' AND tbl_bookings."toDate">'${toDate}')
+                OR (tbl_bookings."fromDate"='${fromDate}' AND tbl_bookings."toDate"='${toDate}')
+                OR ((tbl_bookings."fromDate">'${fromDate}' AND tbl_bookings."fromDate"<'${toDate}') AND tbl_bookings."toDate">'${toDate}')
+                ORDER BY tbl_bookings."idBookings", tbl_contractors."idContractor"`
+        const result = await client.query(sql)
+        return result.rows
+    } catch (e) {
+        return console.error('Error while retrieving info about ordered contractors.')
+    }
+}
+
+async function getAvailableContractors(fromDate, toDate) {
+    try {
+        // let sql = `SELECT DISTINCT tbl_contractors."idContractor", tbl_contractors."fullName"
+        //             FROM tbl_contractors INNER JOIN tbl_bookings ON tbl_contractors."idContractor" = tbl_bookings."idContractor"
+        //             INNER JOIN tbl_buildings ON tbl_bookings."idBuilding" = tbl_buildings."idBuildings"
+        //             WHERE (tbl_bookings."fromDate"<'${fromDate}' AND tbl_bookings."toDate"<='${fromDate}')
+        //             OR (tbl_bookings."fromDate">='${toDate}' AND tbl_bookings."toDate">'${toDate}')
+        //             ORDER BY tbl_contractors."idContractor"`
+        let sql = `SELECT DISTINCT tbl_contractors."idContractor", tbl_contractors."fullName"
+                    FROM tbl_contractors INNER JOIN tbl_bookings ON tbl_contractors."idContractor" = tbl_bookings."idContractor"
+                    LEFT JOIN tbl_buildings ON tbl_bookings."idBuilding" = tbl_buildings."idBuildings"
+                    WHERE (tbl_bookings."fromDate"<'${fromDate}' AND tbl_bookings."toDate"<='${fromDate}')
+                    OR (tbl_bookings."fromDate">='${toDate}' AND tbl_bookings."toDate">'${toDate}')
+                    ORDER BY tbl_contractors."idContractor"`
+        // console.log(sql)
+        const result = await client.query(sql)
+        return result.rows
+    } catch (e) {
+        return console.error('Error while retrieving info about available contractors.')
+    }
+}
+
 async function addNewBooking(idBuilding, fromDate, toDate, idContractor) {
     try {
         let newBooking = [idBuilding, fromDate, toDate, idContractor]
@@ -319,22 +312,22 @@ async function addNewBooking(idBuilding, fromDate, toDate, idContractor) {
 module.exports.start = start
 module.exports.connect = connect
 module.exports.getContractors = getContractors
+module.exports.getBuildings = getBuildings
+module.exports.getBookings = getBookings
 module.exports.getTopFiveContractorsAll = getTopFiveContractorsAll
 module.exports.getTopFiveContractorsUpcoming = getTopFiveContractorsUpcoming
+module.exports.getTopFiveBuildingsUpcoming = getTopFiveBuildingsUpcoming
 module.exports.addNewContractor = addNewContractor
+module.exports.addNewBuilding = addNewBuilding
 module.exports.getContracorDetails = getContracorDetails
 module.exports.editContractor = editContractor
 module.exports.deleteContractor = deleteContractor
-module.exports.getContractorsOrderedForSelectedPeriod = getContractorsOrderedForSelectedPeriod
-module.exports.getAvailableContractors = getAvailableContractors
-module.exports.getContractorID = getContractorID
-module.exports.getBuildings = getBuildings
-module.exports.getTopFiveBuildingsUpcoming = getTopFiveBuildingsUpcoming
-module.exports.addNewBuilding = addNewBuilding
 module.exports.getBuildingDetails = getBuildingDetails
 module.exports.editBuilding = editBuilding
 module.exports.deleteBuilding = deleteBuilding
-module.exports.getBuildingID = getBuildingID
-module.exports.getBookings = getBookings
 module.exports.getBookingForCurrentBuilding = getBookingForCurrentBuilding
+module.exports.getContractorsOrderedForSelectedPeriod = getContractorsOrderedForSelectedPeriod
+module.exports.getAvailableContractors = getAvailableContractors
 module.exports.addNewBooking = addNewBooking
+module.exports.getContractorID = getContractorID
+module.exports.getBuildingID = getBuildingID

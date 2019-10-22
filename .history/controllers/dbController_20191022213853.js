@@ -141,33 +141,34 @@ async function getContractorsOrderedForSelectedPeriod(fromDate, toDate) {
 
 async function getAvailableContractors(fromDate, toDate) {
     try {
-        let sql = `SELECT DISTINCT tbl_contractors."idContractor", tbl_contractors."fullName"
-                    FROM tbl_contractors INNER JOIN tbl_bookings ON tbl_contractors."idContractor" = tbl_bookings."idContractor"
-                    LEFT JOIN tbl_buildings ON tbl_bookings."idBuilding" = tbl_buildings."idBuildings"
-                    WHERE
-                    (tbl_bookings."fromDate"<'${fromDate}' AND tbl_bookings."toDate"<='${fromDate}')
-                    OR
-                    (tbl_bookings."fromDate">='${toDate}' AND tbl_bookings."toDate">'${toDate}')
-                    ORDER BY tbl_contractors."idContractor"`
-        // sql = `SELECT * FROM tbl_bookings WHERE (tbl_bookings."fromDate"='${fromDate}')`
+        // let sql = `SELECT DISTINCT tbl_contractors."idContractor", tbl_contractors."fullName"
+        //             FROM tbl_contractors INNER JOIN tbl_bookings ON tbl_contractors."idContractor" = tbl_bookings."idContractor"
+        //             LEFT JOIN tbl_buildings ON tbl_bookings."idBuilding" = tbl_buildings."idBuildings"
+        //             WHERE
+        //             (tbl_bookings."fromDate"<'${fromDate}' AND tbl_bookings."toDate"<='${fromDate}')
+        //             OR
+        //             (tbl_bookings."fromDate">='${toDate}' AND tbl_bookings."toDate">'${toDate}')
+        //             ORDER BY tbl_contractors."idContractor"`
+        sql = `SELECT * FROM tbl_bookings`
         const result = await client.query(sql)
 
-        // const resultArr = result.rows.map((record) => {
-        //     const idContractor = record.idContractor
-        //     const dbFromDate = record.fromDate
-        //     const dbToDate = record.toDate
-        //     // return record.fromDate > '2019-05-01'
-        //     // if ((dbFromDate < fromDate && dbToDate <= fromDate) || (dbFromDate >= toDate && dbToDate > toDate)) {
-        //     // console.log(`dbFromDate:${dbFromDate} ; fromDate:${fromDate}`)
+        // console.log(result.rows)
 
-        //     if (dbFromDate == fromDate) {
-        //         console.log(`dbFromDate:${dbFromDate} ; fromDate:${fromDate}`)
-        //         return {
-        //             idContractor: idContractor
-        //         }
+        const resultArr = result.rows.map((record) => {
+            const idContractor = record.idContractor:
+            const dbFromDate = record.fromDate
+            const dbToDate = record.toDate
+            // return record.fromDate > '2019-05-01'
+            if ((dbFromDate < fromDate && dbToDate <= fromDate) || (dbFromDate >= toDate && dbToDate > toDate)) {
+                return {
+                    idContractor: idContractor
+                }
 
-        //     }
-        // })
+            }
+        })
+
+
+        console.log(resultArr)
 
         return result.rows
     } catch (e) {
