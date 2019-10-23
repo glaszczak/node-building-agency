@@ -153,7 +153,7 @@ async function getAvailableContractors(fromDate, toDate) {
 
     try {
         const result = await client.query(sql)
-        const resultArr = await result.rows.map(el => el)
+        const resultArr = await result.rows.map(el => el.idContractor)
 
         // console.log(resultArr)
         return resultArr

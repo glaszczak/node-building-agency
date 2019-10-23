@@ -153,10 +153,29 @@ async function getAvailableContractors(fromDate, toDate) {
 
     try {
         const result = await client.query(sql)
-        const resultArr = await result.rows.map(el => el)
 
-        // console.log(resultArr)
-        return resultArr
+        result.rows.forEach(el => console.log(el))
+
+
+
+        return result.rows
+
+        // const resultArr = result.rows.map((record) => {
+        //     const idContractor = record.idContractor
+        //     const dbFromDate = record.fromDate
+        //     const dbToDate = record.toDate
+        //     // return record.fromDate > '2019-05-01'
+        //     // if ((dbFromDate < fromDate && dbToDate <= fromDate) || (dbFromDate >= toDate && dbToDate > toDate)) {
+        //     // console.log(`dbFromDate:${dbFromDate} ; fromDate:${fromDate}`)
+
+        //     if (dbFromDate == fromDate) {
+        //         console.log(`dbFromDate:${dbFromDate} ; fromDate:${fromDate}`)
+        //         return {
+        //             idContractor: idContractor
+        //         }
+
+        //     }
+        // })
 
     } catch (e) {
         return console.error('Error while retrieving info about available contractors.')
