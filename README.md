@@ -1,5 +1,8 @@
 # Building agency application (CRUD)
+
 Application using Node.js, Express, PostgreSQL, view engine: handlebars
+
+Application available on heroku: https://building-agency.herokuapp.com/
 
 Buildings renovation agency application
 Manager needs to book contractors for renovation work in given buildings.
