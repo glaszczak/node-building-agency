@@ -44,11 +44,15 @@ router.post("/add/newBooking", async (req, res) => {
 
         await db.addNewBooking(buildingId, req.body.startDate, req.body.endDate, contractorId)
 
+        // console.log(`building: ${buildingId}, contractor: ${contractorId}`)
         res.redirect('/bookings')
 
     } catch (err) {
         console.log(err);
     }
+
+    // await db.addNewBooking(buildingId, req.body.startDate, req.body.endDate, contractorId)
+
 })
 
 

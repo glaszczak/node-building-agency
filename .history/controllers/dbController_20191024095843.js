@@ -173,6 +173,28 @@ async function getBuildings() {
     }
 }
 
+async function getBookings() {
+    try {
+        let sql = `SELECT tbl_bookings."toDate",
+            tbl_bookings."fromDate",
+            tbl_buildings."city",
+            tbl_buildings."address",
+            tbl_contractors."city" AS public_tbl_contractors_city2,
+            tbl_contractors."address" AS public_tbl_contractors_address2,
+            tbl_contractors."fullName"
+            FROM tbl_bookings
+            JOIN tbl_contractors ON tbl_bookings."idContractor" = tbl_contractors."idContractor"
+            JOIN tbl_buildings ON tbl_bookings."idBuilding" = tbl_buildings."idBuildings"
+            ORDER BY tbl_buildings."address"`
+
+        const results = await client.query(sql)
+        //console.log(results.rows[1].fullname)
+        return results.rows
+    } catch (e) {
+        return []
+    }
+}
+
 // To get TOP 5 Buildings - upcoming bookings
 async function getTopFiveBuildingsUpcoming() {
     try {
@@ -235,7 +257,9 @@ async function deleteBuilding(id) {
 
 async function getBuildingID(address) {
     try {
+        console.log(address)
         const results = await client.query(`SELECT "idBuildings" FROM tbl_buildings WHERE "address"='${address}'`)
+        console.log(results);
         return results.rows[0].idBuildings
     } catch (e) {
         return []
@@ -245,28 +269,6 @@ async function getBuildingID(address) {
 
 
 // ***************** BOOKINGS *****************
-async function getBookings() {
-    try {
-        let sql = `SELECT tbl_bookings."toDate",
-            tbl_bookings."fromDate",
-            tbl_buildings."city",
-            tbl_buildings."address",
-            tbl_contractors."city" AS public_tbl_contractors_city2,
-            tbl_contractors."address" AS public_tbl_contractors_address2,
-            tbl_contractors."fullName"
-            FROM tbl_bookings
-            JOIN tbl_contractors ON tbl_bookings."idContractor" = tbl_contractors."idContractor"
-            JOIN tbl_buildings ON tbl_bookings."idBuilding" = tbl_buildings."idBuildings"
-            ORDER BY tbl_bookings."fromDate", tbl_bookings."toDate"`
-
-        const results = await client.query(sql)
-        //console.log(results.rows[1].fullname)
-        return results.rows
-    } catch (e) {
-        return []
-    }
-}
-
 async function getBookingForCurrentBuilding(id) {
     try {
         let sql = `SELECT tbl_contractors."idContractor", tbl_contractors."fullName", tbl_bookings."fromDate", tbl_bookings."toDate",
