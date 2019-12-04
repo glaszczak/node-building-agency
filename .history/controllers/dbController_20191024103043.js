@@ -257,7 +257,7 @@ async function getBookings() {
             FROM tbl_bookings
             JOIN tbl_contractors ON tbl_bookings."idContractor" = tbl_contractors."idContractor"
             JOIN tbl_buildings ON tbl_bookings."idBuilding" = tbl_buildings."idBuildings"
-            ORDER BY tbl_bookings."fromDate", tbl_bookings."toDate"`
+            ORDER BY tbl_bookings."fromDate"`
 
         const results = await client.query(sql)
         //console.log(results.rows[1].fullname)
